@@ -24,9 +24,10 @@ Blog Operations
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/blog-api.git
+git clone https://github.com/yourusername/BlogApi.git 
 
-cd blog-api
+
+cd BlogApi
 ```
 
 ## Usage
@@ -40,8 +41,6 @@ pip install -r requirements.txt
 # Run the application:'
 py src/run.py
 
-# returns 'phenomenon'
-foobar.singularize('phenomena')
 ```
 ### Schemas
 BlogBase
