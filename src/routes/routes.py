@@ -6,10 +6,10 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 import shutil
 
-api_router = APIRouter()
-
-
 VERSION = 0
+
+api_router = APIRouter(prefix=f'/api/v{VERSION}')
+
 
 
 def get_db(): 
@@ -23,24 +23,21 @@ def get_db():
 
 
 
-@api_router.get('/')
-def root(): 
-    return {"message":"Hello world"}
 
 
-@api_router.get(f'/api/v{VERSION}/all_blog')
+@api_router.get('/all_blog')
 def get_all_blogs(db:Session = Depends(get_db)): 
     all_blogs = db.query(Blog).all()
     return all_blogs
 
-@api_router.get(f'/api/v{VERSION}/blog/{{str_id}}')
+@api_router.get('/blog/{{str_id}}')
 def get_blogs( str_id:str, db: Session = Depends(get_db)): 
     blog_infos = db.query(Blog).filter(Blog.id==str_id).first()
     if blog_infos : 
         return blog_infos 
     return {'id': str_id, 'message': 'Blog Not Found'} 
     
-@api_router.post(f'/api/v{VERSION}/create_post')
+@api_router.post('/create_post')
 def create_post(blog: BlogBase, db: Session = Depends(get_db)): 
     blog_info = Blog(
         id=blog.id,
@@ -58,7 +55,7 @@ def create_post(blog: BlogBase, db: Session = Depends(get_db)):
     
     return {'id':blog_info.id , 'message':'Blog created'}
 
-@api_router.delete(f'/api/v{VERSION}/del_blog/{{str_id}}')
+@api_router.delete(f'/del_blog/{{str_id}}')
 def delete_blog(str_id:str, db:Session = Depends(get_db)) :
     deleted_blog = db.query(Blog).filter(Blog.id==str_id).first()
     
@@ -67,7 +64,7 @@ def delete_blog(str_id:str, db:Session = Depends(get_db)) :
     return { 'message':'Deleted Blogs'} 
 
 
-@api_router.put(f'/api/v{VERSION}/update_blog/{{str_id}}')
+@api_router.put(f'/update_blog/{{str_id}}')
 def update_blog(str_id: str, blog: BlogBase, db: Session = Depends(get_db)):
     update_blog = db.query(Blog).filter(Blog.id == str_id).first()
     

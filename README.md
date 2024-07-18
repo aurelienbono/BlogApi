@@ -47,7 +47,7 @@ BlogBase
 Defines the basic structure of a blog post.
 
 ### Usage
-Once the server is running, you can access the API documentation at - - -- 
+Once the server is running, you can access the API documentation at
 - http://127.0.0.1:8000/docs 
 - http://127.0.0.1:8000/redoc.
 
