@@ -1,14 +1,14 @@
 from fastapi import APIRouter , Depends , File , UploadFile
 
 from schema.schema import BlogBase , UploadFiles
-from models.models import SessionLocal, Blog 
+from models.blogs import SessionLocal, Blog 
 from sqlalchemy.orm import Session
 from datetime import datetime
 import shutil
 
 VERSION = 0
 
-api_router = APIRouter(prefix=f'/api/v{VERSION}')
+api_router = APIRouter(prefix=f'/api/v{VERSION}/blogs')
 
 
 
@@ -84,3 +84,14 @@ def update_blog(str_id: str, blog: BlogBase, db: Session = Depends(get_db)):
     
     return {'id': str_id, 'message': 'Blog Not Found'}
 
+@api_router.post('upload_file')
+def upload_file(file : UploadFile=File(...)): 
+    
+    try : 
+        path = f'src/save_file/{file.filename}'
+        with open(path , 'wb') as buffer : 
+            shutil.copyfileobj(file.file, buffer)
+        return {"message":'file exist', 'file':file.file ,'filename': file.filename , 'size': file.size}
+    except Exception as e : 
+        
+        return {"Error":e}
